@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dice Roll</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-material-design.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/ripples.css">
+    <link rel="stylesheet" href="css/jquery.countdown.css">
+    
+</head>
+  <body>
+    <header class="site-header">
+    <div class="site-icon">
+        <div class="dice-box">
+            <div class="dice rotate_right">
+                <div class="pip-container clearfix">
+                    <div class="pip pull-right" id="1"></div>
+                </div>
+                <div class="pip-container">
+                    <div class="pip center-block" id="2"></div>
+                </div>
+                <div class="pip-container">
+                    <div class="pip pull-left" id="3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+  <div class="wrapper">
+
+    <p class="site-title">Dice Roll Tracker - Table 1</p> 
+
+
+  </div>
+
+</header>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="col-md-8">
+		  <div class="dice-chart">
+			<div class="canvas-icon digit-box">
+			
+				<div id="0" class="icon-1">
+					<div class="icon-2">
+						<div class="icon-3">
+							<div class="icon-4">
+								<div class="icon-5">
+									<div class="icon-6">
+										<canvas id="diceChart" height="424" width="849" style="width: 849px; height: 424px;"></canvas>			
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="icon-eff">
+		<button class="btn-default resetbutton ic1" type="button" id="0"></button>
+		<button class="btn-default resetbutton ic2" type="button" id="1"></button>
+		<button class="btn-default resetbutton ic3" type="button" id="2"></button>
+		<button class="btn-default resetbutton ic4" type="button" id="3"></button>
+		<button class="btn-default resetbutton ic5" type="button" id="4"></button>
+		<button class="btn-default resetbutton ic6" type="button" id="5"></button>
+		
+		</div>
+ 
+</div>
+          <div class="col-md-4" id="input">
+    <div class="panel panel-default" id="history">
+    <div class="panel-heading clearfix">
+        <span id="roll-history-txt" class="pull-left">Roll History</span>
+        <span id="total-txt" class="pull-right clearfix"></span>
+    </div>
+    <div class="last-roll panel-body" id="last-roll">
+        <div id="nextUpContainer" style="display:none"><label class="control-label" id="nextUp"></label></div>
+        <div class="user-icons"></div>
+      <div id="lr-text">Last Roll:</div>
+        <div id="rolls"></div>
+    </div>
+</div>
+    <div class="panel panel-default" id="numbers">
+        <div class="panel-body center-block">
+			<div class="digit-box">
+				<button class="btn btn-default digit ic1" type="button" id="0"><img class="img-responsive" src="images/icon-1.png" /></button>
+				<button class="btn btn-default digit ic2" type="button" id="1"><img class="img-responsive" src="images/icon-2.png" /></button>
+				<button class="btn btn-default digit ic3" type="button" id="2"><img class="img-responsive" src="images/icon-3.png" /></button>
+			</div>
+			<div class="digit-box">
+				<button class="btn btn-default digit ic4" type="button" id="3"><img class="img-responsive" src="images/icon-4.png" /></button>
+				<button class="btn btn-default digit ic5" type="button" id="4"><img class="img-responsive" src="images/icon-5.png" /></button>
+				<button class="btn btn-default digit ic6" type="button" id="5"><img class="img-responsive" src="images/icon-6.png" /></button>
+			</div>
+			<div class="text-right">
+				<button class="btn btn-sm reset undo-btn" type="button" id="undo">Undo</button>
+			</div>
+			<div class="form-group center-block reset">
+				<button class="btn btn-default reset" type="button" id="reset">Reset roll data<div class="ripple-container"></div></button>
+			</div>
+        </div>
+    </div>
+    <button id="settingsBtn" class="btn btn-sm pull-right" type="button" data-toggle="collapse" data-target="#collapsePanel" aria-expanded="false" aria-controls="collapseExample">
+    <span id="settingsText">Settings</span> <span class="glyphicon glyphicon-cog"></span>
+</button>
+<div class="panel panel-default">
+    <div class="panel-body" id="settingsPanel">
+        <div class="collapse" id="collapsePanel">
+            <div class="form-group">
+                <label class="control-label" for="users">Number of Players:</label>
+                <select class="form-control" id="users">
+                    <option>Select Number of Players</option>
+                    <option value="0">None</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                </select>
+            <span class="material-input"></span></div>
+            <div class="form-group" id="playerNameInputs">
+            </div>
+            <div class="form-group" id="saveSettings">
+                <button class="btn btn-default pull-right" id="saveSettingsBtn">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+        </div>
+      </div>
+    </div>
+   
+
+<!-- Table 2-->
+  <div class="wrapper" style="margin-top:100px;">
+
+    <p class="site-title">Dice Roll Tracker - Table 2</p> 
+
+
+  </div>
+  <hr>
+ <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="col-md-8">
+          <div class="dice-chart">
+            <div class="canvas-icon digit-box">
+            
+                <div id="0" class="icon-1">
+                    <div class="icon-2">
+                        <div class="icon-3">
+                            <div class="icon-4">
+                                <div class="icon-5">
+                                    <div class="icon-6">
+                                        <canvas id="diceChart2" height="424" width="849" style="width: 849px; height: 424px;"></canvas>          
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="icon-eff">
+        <button class="btn-default  ic1" type="button" id="0"></button>
+        <button class="btn-default  ic2" type="button" id="1"></button>
+        <button class="btn-default  ic3" type="button" id="2"></button>
+        <button class="btn-default  ic4" type="button" id="3"></button>
+        <button class="btn-default  ic5" type="button" id="4"></button>
+        <button class="btn-default  ic6" type="button" id="5"></button>
+        
+        </div>
+ 
+</div>
+          <div class="col-md-4" id="input">
+    <div class="panel panel-default" id="history">
+    <div class="panel-heading clearfix">
+        <span id="roll-history-txt" class="pull-left">Roll History</span>
+        <span id="total-txt" class="pull-right clearfix"></span>
+    </div>
+    <div class="last-roll panel-body" id="last-roll">
+        <div id="nextUpContainer" style="display:none"><label class="control-label" id="nextUp"></label></div>
+        <div class="user-icons"></div>
+      <div id="lr-text">Last Roll:</div>
+        <div id="rolls2"></div>
+    </div>
+</div>
+    <div class="panel panel-default" id="numbers">
+        <div class="panel-body center-block">
+            <div class="digit-box">
+                <button class="btn btn-default digit ic1" type="button" id="0"><img class="img-responsive" src="images/icon-1.png" /></button>
+                <button class="btn btn-default digit ic2" type="button" id="1"><img class="img-responsive" src="images/icon-2.png" /></button>
+                <button class="btn btn-default digit ic3" type="button" id="2"><img class="img-responsive" src="images/icon-3.png" /></button>
+            </div>
+            <div class="digit-box">
+                <button class="btn btn-default digit ic4" type="button" id="3"><img class="img-responsive" src="images/icon-4.png" /></button>
+                <button class="btn btn-default digit ic5" type="button" id="4"><img class="img-responsive" src="images/icon-5.png" /></button>
+                <button class="btn btn-default digit ic6" type="button" id="5"><img class="img-responsive" src="images/icon-6.png" /></button>
+            </div>
+            <div class="text-right">
+                <button class="btn btn-sm reset undo-btn" type="button" id="undo">Undo</button>
+            </div>
+            <div class="form-group center-block reset">
+                <button class="btn btn-default reset" type="button" id="reset">Reset roll data<div class="ripple-container"></div></button>
+            </div>
+        </div>
+    </div>
+      <button id="settingsBtn" class="btn btn-sm pull-right" type="button" data-toggle="collapse" data-target="#collapsePanel" aria-expanded="false" aria-controls="collapseExample">
+          <span id="settingsText">Settings</span> <span class="glyphicon glyphicon-cog"></span>
+      </button>
+      <div class="panel panel-default">
+          <div class="panel-body" id="settingsPanel">
+              <div class="collapse" id="collapsePanel">
+                  <div class="form-group">
+                      <label class="control-label" for="users">Number of Players:</label>
+                      <select class="form-control" id="users">
+                          <option>Select Number of Players</option>
+                          <option value="0">None</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                      </select>
+                  <span class="material-input"></span></div>
+                  <div class="form-group" id="playerNameInputs">
+                  </div>
+                  <div class="form-group" id="saveSettings">
+                      <button class="btn btn-default pull-right" id="saveSettingsBtn">Save</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+      </div>
+        </div>
+      </div>
+    </div>
+
+<script async="" src="https://www.google-analytics.com/analytics.js"></script><script src="js/jquery.min.js"></script>
+<script src="js/tether.min.js"></script>
+<script src="js/material.js"></script>
+<script src="js/ripples.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.hotkeys.js"></script>
+<script src="js/app.js"></script>
+<script src="js/Chart.min.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-31214147-5', 'auto');
+  ga('send', 'pageview');
+</script>
+  
+</body></html>
