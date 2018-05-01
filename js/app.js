@@ -26,7 +26,7 @@
         $(p).prependTo(target);
       try{
         rolls1.push((parseInt(iden)+1));
-      }catch{
+      }catch(e){
         rolls1 = [];
         rolls1.push((parseInt(iden)+1));
       }
@@ -45,7 +45,7 @@
         $(p).data("arrayId", {id: iden});
               $(p).prependTo(target);
       });
-      }catch{
+      }catch(e){
           $('#total-txt').text('Total Rolls: 0');
       }
          
@@ -62,7 +62,7 @@
         $(p).data("arrayId", {id: iden});
               $(p).prependTo(target1);
       });
-      }catch{
+      }catch(e){
           $('#total-txt1').text('Total Rolls: 0');
       }
        
@@ -89,7 +89,7 @@
         $(p).prependTo(target);
         try{
         rolls2.push((parseInt(iden)+1));
-      }catch{
+      }catch(e){
         rolls2 = [];
         rolls2.push((parseInt(iden)+1));
       }
