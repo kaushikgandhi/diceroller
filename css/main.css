@@ -140,9 +140,9 @@ header { margin-bottom: 20px; }
 div.reset { margin-top: 30px; }
 
 button#reset { background-color: #eeeeee; width: 100%; }
-
+button#reset1 { background-color: #eeeeee; width: 100%; }
 button#undo { background-color: rgba(193, 160, 160, 0.8); }
-
+button#undo1 { background-color: rgba(193, 160, 160, 0.8); }
 div#rolls { max-height: 70px; overflow-y: auto; margin-bottom: 1px; }
 
 .site-icon { margin-right: 20px; float: left; padding: 10px; }

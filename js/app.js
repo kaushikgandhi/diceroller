@@ -24,6 +24,24 @@
         $(p).prependTo(target);
     }
 
+    function logHistory1(button) {
+        var iden, target, $el, val;
+        $el = $(button);
+        val = $el.text();
+        iden = $el.attr("id");
+        target = $("div#rolls1");
+        var idx = function () {
+            return $("span.history-text").length;
+        };
+       
+        var p = $("<span/>", {
+            "class": "history-text ic-"+(parseInt(iden)+1),
+            id: iden
+        });
+        $(p).data("arrayId", {id: iden});
+        $(p).prependTo(target);
+    }
+
     function displayUsers(n) {
         if (n == 0) {
             nextUp(0);
@@ -152,14 +170,28 @@
                 }
             ]
         };
-
+        var data1 = {
+            labels: ["", "", "", "", "", ""],
+            datasets: [
+                {
+                    label: "1",
+                    fillColor: "rgba(114,166,202,0.2)",
+                    strokeColor: "rgba(114,166,202,.8)",
+                    pointColor: "rgba(220,220,220,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: [0, 0, 0, 0, 0, 0]
+                }
+            ]
+        };
         var ctx = $("#diceChart").get(0).getContext("2d");
         var ctx2 = $("#diceChart2").get(0).getContext("2d");
         var lineChart = new Chart(ctx).Bar(data, {
             responsive: true,
             tooltipTemplate: "Total: <%= value %>"
         });
-        var lineChart2 = new Chart(ctx2).Bar(data, {
+        var lineChart1 = new Chart(ctx2).Bar(data1, {
             responsive: true,
             tooltipTemplate: "Total: <%= value %>"
         });
@@ -177,12 +209,25 @@
                 el.value = 0;
             });
             lineChart.update();
-            $("span.history-text").remove();
+            $("#rolls span.history-text").remove();
             $("span#total-txt").empty();
         };
 
+        var resetData1 = function () {
+            var bar = lineChart1.datasets[0].bars;
+            $.each(bar, function (idx, el) {
+                el.value = 0;
+            });
+            lineChart1.update();
+            $("#rolls1 span.history-text").remove();
+            $("span#total-txt1").empty();
+        };
         var calcTotal = function (id) {
             var current = lineChart.datasets[0].bars[id].value;
+            return current + 1;
+        };
+        var calcTotal1 = function (id) {
+            var current = lineChart1.datasets[0].bars[id].value;
             return current + 1;
         };
 
@@ -191,6 +236,11 @@
             lineChart.datasets[0].bars[id].value = current - 1;
             lineChart.update();
         };
+        var deleteOne1 = function (id) {
+            var current = lineChart1.datasets[0].bars[id].value;
+            lineChart1.datasets[0].bars[id].value = current - 1;
+            lineChart1.update();
+        };
 
         var logDiceRoll = function (button) {
             var $el = $(button);
@@ -198,10 +248,20 @@
             lineChart.datasets[0].bars[id].value = calcTotal(id);
             lineChart.update();
         };
+        var logDiceRoll1 = function (button) {
+            var $el = $(button);
+            var id = $($el).attr("id");
+            lineChart1.datasets[0].bars[id].value = calcTotal1(id);
+            lineChart1.update();
+        };
 
         var setTotalRolls = function () {
-            var count = $("span.history-text").length;
+            var count = $("#rolls span.history-text").length;
             $("span#total-txt").html("Total Rolls: " + count);
+        };
+        var setTotalRolls1 = function () {
+            var count = $("#rolls1 span.history-text").length;
+            $("span#total-txt1").html("Total Rolls: " + count);
         };
 
         var numbers = $("button.digit");
@@ -210,6 +270,16 @@
             logDiceRoll(this);
             logHistory(this);
             setTotalRolls();
+            highlightUser();
+        });
+
+        //table 2
+        var numbers1 = $("button.digit1");
+
+        $(numbers1).on('click', function () {
+            logDiceRoll1(this);
+            logHistory1(this);
+            setTotalRolls1();
             highlightUser();
         });
 
@@ -233,6 +303,11 @@
             setUser($("span.glyphicon-user:first-child"));
             nextUp("1");
         });
+        $("button#reset1").on('click', function () {
+            resetData1();
+            setUser($("span.glyphicon-user:first-child"));
+            nextUp("1");
+        });
 
         $(".user-icons").on('click', 'span.glyphicon-user', function () {
             setUser(this);
@@ -240,7 +315,7 @@
         });
 
         $("button#undo").on('click', function () {
-            var target = $("span.history-text:first-child");
+            var target = $("#rolls span.history-text:first-child");
             var v = target.data("arrayId");
             var arrayId = $.map(v, function (idx, el) {
                 return idx;
@@ -248,6 +323,17 @@
             deleteOne(arrayId);
             target.remove();
             setTotalRolls();
+        });
+
+        $("button#undo1").on('click', function () {
+            var target = $("#rolls1 span.history-text:first-child");
+            var v = target.data("arrayId");
+            var arrayId = $.map(v, function (idx, el) {
+                return idx;
+            });
+            deleteOne1(arrayId);
+            target.remove();
+            setTotalRolls1();
         });
 
         $("select#users").on('change', function () {
