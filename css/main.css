@@ -133,6 +133,11 @@ canvas#diceChart { max-height: 600px; }
 
 div#input { margin-top: 10px; }
 
+@media(max-width: 991px){
+
+    div#input { margin-top: 100px; }
+}
+
 header { margin-bottom: 20px; }
 
 .wrapper p#footer-text { text-align: center; font-size: .9em; }
@@ -389,4 +394,8 @@ button#settingsBtn { color: #72a6ca; }
 
 .icon-eff .ic6 {
     left: 88%;
+}
+
+.m-t-md{
+    margin-top: 100px;
 }

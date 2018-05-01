@@ -6,6 +6,8 @@
  
 (function ($, window, document) {
     'use strict';
+    var rolls1 = [];
+    var rolls2 = [];
     function logHistory(button) {
         var iden, target, $el, val;
         $el = $(button);
@@ -18,10 +20,55 @@
        
         var p = $("<span/>", {
             "class": "history-text ic-"+(parseInt(iden)+1),
-            id: iden
+            id: (parseInt(iden)-1)
         });
         $(p).data("arrayId", {id: iden});
         $(p).prependTo(target);
+      try{
+        rolls1.push((parseInt(iden)+1));
+      }catch{
+        rolls1 = [];
+        rolls1.push((parseInt(iden)+1));
+      }
+    }
+
+    function arrangeRolls(){
+      try{
+      $('#total-txt').text('Total Rolls: '+rolls1.length);
+      var target = $("div#rolls");
+         $("div#rolls").empty();
+        $.each(rolls1,function(id,iden){
+         var p = $("<span/>", {
+                  "class": "history-text ic-"+(parseInt(iden)),
+                  id: iden
+              });
+        $(p).data("arrayId", {id: iden});
+              $(p).prependTo(target);
+      });
+      }catch{
+          $('#total-txt').text('Total Rolls: 0');
+      }
+         
+
+        try{
+      $('#total-txt1').text('Total Rolls: '+rolls2.length);
+       var target1 = $("div#rolls1");
+        $("div#rolls1").empty();
+        $.each(rolls2,function(id,iden){
+         var p = $("<span/>", {
+                  "class": "history-text ic-"+(parseInt(iden)),
+                  id: iden
+              });
+        $(p).data("arrayId", {id: iden});
+              $(p).prependTo(target1);
+      });
+      }catch{
+          $('#total-txt1').text('Total Rolls: 0');
+      }
+       
+        
+
+
     }
 
     function logHistory1(button) {
@@ -36,10 +83,16 @@
        
         var p = $("<span/>", {
             "class": "history-text ic-"+(parseInt(iden)+1),
-            id: iden
+            id: (parseInt(iden)-1)
         });
         $(p).data("arrayId", {id: iden});
         $(p).prependTo(target);
+        try{
+        rolls2.push((parseInt(iden)+1));
+      }catch{
+        rolls2 = [];
+        rolls2.push((parseInt(iden)+1));
+      }
     }
 
     function displayUsers(n) {
@@ -197,11 +250,19 @@
         });
         var resetOneChart = function(whichbar){
             console.log(whichbar);
-            $("span.history-text.ic-"+(whichbar+1)).remove();
+            $("#rolls span.history-text.ic-"+(whichbar+1)).remove();
             lineChart.datasets[0].bars[whichbar].value = 0;
             lineChart.update();
+            postData();
             
 
+        };
+        var resetOneChart1 = function(whichbar){
+            console.log(whichbar);
+            $("#rolls1 span.history-text.ic-"+(whichbar+1)).remove();
+            lineChart1.datasets[0].bars[whichbar].value = 0;
+            lineChart1.update();
+            postData();
         };
         var resetData = function () {
             var bar = lineChart.datasets[0].bars;
@@ -209,8 +270,12 @@
                 el.value = 0;
             });
             lineChart.update();
+
             $("#rolls span.history-text").remove();
+            rolls1 = [];
             $("span#total-txt").empty();
+            postData();
+            
         };
 
         var resetData1 = function () {
@@ -221,25 +286,32 @@
             lineChart1.update();
             $("#rolls1 span.history-text").remove();
             $("span#total-txt1").empty();
+            rolls2 = [];
+            postData();
+            
         };
         var calcTotal = function (id) {
             var current = lineChart.datasets[0].bars[id].value;
-            return current + 1;
+            return parseInt(current) + 1;
         };
         var calcTotal1 = function (id) {
             var current = lineChart1.datasets[0].bars[id].value;
-            return current + 1;
+            return parseInt(current) + 1;
         };
 
         var deleteOne = function (id) {
             var current = lineChart.datasets[0].bars[id].value;
             lineChart.datasets[0].bars[id].value = current - 1;
             lineChart.update();
+            rolls1.pop();
+            postData();
         };
         var deleteOne1 = function (id) {
             var current = lineChart1.datasets[0].bars[id].value;
             lineChart1.datasets[0].bars[id].value = current - 1;
             lineChart1.update();
+            rolls2.pop()
+            postData();
         };
 
         var logDiceRoll = function (button) {
@@ -247,12 +319,15 @@
             var id = $($el).attr("id");
             lineChart.datasets[0].bars[id].value = calcTotal(id);
             lineChart.update();
+            postData();
+
         };
         var logDiceRoll1 = function (button) {
             var $el = $(button);
             var id = $($el).attr("id");
             lineChart1.datasets[0].bars[id].value = calcTotal1(id);
             lineChart1.update();
+            postData();
         };
 
         var setTotalRolls = function () {
@@ -267,20 +342,59 @@
         var numbers = $("button.digit");
 
         $(numbers).on('click', function () {
-            logDiceRoll(this);
-            logHistory(this);
-            setTotalRolls();
-            highlightUser();
+          var _this = this;
+             $.get( "handler.php",function(data){ 
+
+                console.log(data);
+
+                var bar1 = lineChart.datasets[0].bars;
+                  $.each(bar1, function (idx, el) {
+                      el.value = data['data1'][idx];
+                  });
+                 var bar2 = lineChart1.datasets[0].bars;
+                    $.each(bar2, function (idx, el) {
+                    el.value = data['data2'][idx];
+                    });
+                lineChart.update();
+                lineChart1.update();
+                logHistory(_this);
+                setTotalRolls();
+                logDiceRoll(_this);
+               
+                highlightUser();
+
+            });
+
         });
 
         //table 2
         var numbers1 = $("button.digit1");
 
         $(numbers1).on('click', function () {
-            logDiceRoll1(this);
-            logHistory1(this);
-            setTotalRolls1();
-            highlightUser();
+            var _this = this;
+
+            $.get( "handler.php",function(data){ 
+
+                console.log(data);
+
+                var bar1 = lineChart.datasets[0].bars;
+                  $.each(bar1, function (idx, el) {
+                      el.value = data['data1'][idx];
+                  });
+                 var bar2 = lineChart1.datasets[0].bars;
+                    $.each(bar2, function (idx, el) {
+                    el.value = data['data2'][idx];
+                    });
+                lineChart.update();
+                lineChart1.update();
+                 logHistory1(_this);
+                setTotalRolls1();
+                logDiceRoll1(_this);
+               
+                highlightUser();
+
+            });
+            
         });
 
         //reset button 
@@ -288,6 +402,10 @@
             var id = parseInt(this.id);
             resetOneChart(id);
 
+        });
+        $('button.resetbutton1').on('click',function(){
+            var id = parseInt(this.id);
+            resetOneChart1(id);
         });
         $("button#settingsBtn").on('click', function () {
             var settingsBtnSpan = $("span#settingsText");
@@ -389,5 +507,49 @@
         }
 
         //displayTimer();
+        var syncData = function(){
+
+            $.get( "handler.php",function(data){ 
+
+                console.log(data);
+
+                var bar1 = lineChart.datasets[0].bars;
+                  $.each(bar1, function (idx, el) {
+                      el.value = data['data1'][idx];
+                  });
+                 var bar2 = lineChart1.datasets[0].bars;
+                    $.each(bar2, function (idx, el) {
+                    el.value = data['data2'][idx];
+                    });
+                rolls1 = data['rolls1'];
+                rolls2 = data['rolls2'];
+                lineChart.update();
+                lineChart1.update();
+                arrangeRolls();
+
+            });
+
+        };
+        syncData();
+        $('.refresh').on('click',syncData);
+        var postData = function(){
+          var data1=[];
+          var data2 = [];
+            var bar1 = lineChart.datasets[0].bars;
+                  $.each(bar1, function (idx, el) {
+                      data1.push(el.value);
+                  });
+                 var bar2 = lineChart1.datasets[0].bars;
+                    $.each(bar2, function (idx, el) {
+                    data2.push(el.value);
+                    });
+            var post_data = {'data':{'data1':data1,'data2':data2,'rolls1':rolls1,'rolls2':rolls2}};
+            $.post( "handler.php",post_data).done(function(data){ 
+                console.log(data);
+
+            });
+
+        };
+
     });
 })(jQuery);
